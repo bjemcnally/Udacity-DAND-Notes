@@ -203,3 +203,173 @@ sum() function returns to sum of elements in a list
 
 the indented body of the WHILE loop should modify at lease one variable in the test expression or will result in an infinite loop
 """
+
+# Break, Continue
+
+'''
+break statement terminates a for or while loop immediately
+'''
+
+manifest = [('bananas', 15), ('mattresses', 34), ('dog kennels', 42), ('machine', 120), ('cheeses', 5)]
+
+weight = 0
+items = []
+for cargo in manifest:
+    if weight >= 100:
+        break
+    else:
+        items.append(cargo[0]) # add cargo to items list
+        weight += cargo[1] # add cargos weight to weight
+# this gives the wrong result and is used to introduce continue
+'''
+continue statement terminates one iteration of a for or while loop
+'''
+fruit = ['orange', 'strawberry', 'apple']
+foods = ['apple', 'apple', 'hummus', 'toast']
+
+fruit_count = 0
+for food in foods:
+    if food not in fruit:
+        print('Not a fruit')
+        continue
+    fruit count += 1
+    print('Found a fruit!')
+
+print('Total fruit: ', fruit_count)
+
+# output will be:
+# Found a fruit!
+# Found a fruit!
+# Not a fruit!
+# Not a fruit!
+# Total fruit: 2
+
+# Zip and Enumerate
+
+'''
+zip returns an iterator that combines multiple iterables into one sequence of tuples. each tuple contains the elements in that position from all the iterables.
+
+need to convert to list to see the elments via print or iterate through it with a for loop to print the values
+'''
+
+items = ['bananas', 'mattresses', 'dog kennels', 'machine', 'cheeses']
+weights = [15, 34, 42, 120, 5]
+
+print(list(zip(items, weights)))
+# or
+for cargo in zip(items, weights): # each element in zip is now cargo (a tuple of the paired elements of items and weights)
+    print(cargo[0], cargo[1]) # returns each of the elements in each of the tuples in the zip
+# or
+for item, weight in zip(items, weights):
+    print(item,weight)
+
+'''
+you can unzip a list using an asterisk (*)
+'''
+
+items, weight = zip(*manifest)
+# will result in two lists items taking the first element from each tuple in the list, weight taking the second
+
+'''
+sometimes its helpful to iterate and keep track of the index of each element:
+'''
+
+for i, item in zip(range(len(items)), items):
+    print(i, item)
+
+# will print:
+# 0 bananas
+# 1 mattresses ,etc
+
+'''
+or use enumerate function:
+'''
+
+for i, item in enumerate(items):
+    print(i, item)
+
+'''
+can also use zip to create a dictionary:
+'''
+list1 = [1, 2, 3, 4]
+list2 = [5, 6, 7, 8]
+
+new_dictionary = dict(zip(list1, list2))
+
+# Quiz
+
+# MY ANSWER
+x_coord = [23, 53, 2, -12, 95, 103, 14, -5]
+y_coord = [677, 233, 405, 433, 905, 376, 432, 445]
+z_coord = [4, 16, -6, -42, 3, -6, 23, -1]
+labels = ["F", "J", "A", "Q", "Y", "B", "W", "X"]
+
+points = []
+# write your for loop here
+for label, x, y, z in zip(labels, x_coord, y_coord, z_coord):
+    point = "{}: {}, {}, {}".format(label, x, y, z)
+    points.append(point)
+
+for point in points:
+    print(point)
+
+# THEIR ANSWER
+
+points = []
+for point in zip(labels, x_coord, y_coord, z_coord):
+    points.append("{}: {}, {}, {}".format(*point))
+
+# this works because each element in new zip consists of label, x_coord, etc. already
+
+# List Comprehensions
+
+'''
+use list comprehensions to crease lists quickyl and concisely
+'''
+
+cities = ['new york', 'mountain view', 'chicago', 'los angeles']
+
+# old way:
+
+capitalized_cities = []
+for city in cities:
+    capitalized_cities.append(city.title())
+
+# list comprehensions allow us to create a list using a for loop in one step (instead of 2), we also don't need to create an empty list beforehand and append each element as we would in a for loop
+
+capitalized_cities = [city.title() for city in cities]
+
+'''
+another example
+'''
+
+squares = []
+for x in range(9):
+    squares.append(x**2)
+print(squares)
+
+# as list comprehension:
+
+squares = [x**2 for x in range(9)]
+print(squares)
+
+'''
+you can also add conditionals to list comprehensions:
+'''
+
+squares = [x**2 for x in range(9) if x % 2 == 0]
+print(squares)
+
+'''
+to break this one down in English (aka simpler Python):
+squares = []
+    for x in range(9)
+        if x % 2 == 0:
+            squares.append(x**2)
+
+the [] brackets indicate a list, the first item is what is to be added to the list given some for loop and condition
+
+if you want to add ELSE. you have to move the conditions to the beginning of the list comprehension (listcomp):
+'''
+
+squares = [x**2 if x % 2 == 0 else x + 3 for x in range(9)]
